@@ -8,7 +8,7 @@ function App() {
   };
 
   const [formValues, setFormValues] = useState(initialData);
-  const [editValues, setEditValues] = useState({});
+  const [editValues, setEditValues] = useState(initialData);
   const [toggleEdit, setToggleEdit] = useState(false);
 
   const createPost = (newValue, fieldName) => {
@@ -19,13 +19,20 @@ function App() {
     setFormValues(newFormValue);
   };
 
-  const updatePost = (postIdToUpdate) => {
-    const postToUpdate = postList.filter((post) => post.id == postIdToUpdate);
-    setEditValues(postToUpdate);
+  const updatePost = (newValue, fieldName) => {
+    const newEditValue = { ...editValues };
+
+    newEditValue[fieldName] = newValue;
+
+    setEditValues(newEditValue);
   };
 
-  const openFormEdit = () => {
-    setToggleEdit(!toggleEdit);
+  const openFormAndSetValueEdit = (postToUpdate) => {
+    setToggleEdit(true);
+
+    setEditValues(postToUpdate);
+
+    // setToggleEdit(false);
   };
 
   const removePost = (postToRemove) => {
@@ -53,16 +60,13 @@ function App() {
   const handleFormEditSubmit = (e) => {
     e.preventDefault();
 
-    setPostList([
-      ...postList,
-      {
-        ...editValues,
-        id: editValues.id,
-        title: editValues.title,
-      },
-    ]);
+    setPostList(
+      postList.map((post) => (post.id == editValues.id ? editValues : post)),
+    );
 
-    setEditValues({});
+    setToggleEdit(false);
+
+    setEditValues(initialData);
   };
 
   return (
@@ -76,7 +80,7 @@ function App() {
           Titolo del post
         </label>
         <input
-          value={editValues.title}
+          value={formValues.title}
           onChange={(e) => createPost(e.target.value, 'title')}
           type="text"
           name="title"
@@ -101,25 +105,30 @@ function App() {
           Titolo del post
         </label>
         <input
-          value={formValues.title}
-          onChange={() => updatePost(post.idlllll)}
+          value={editValues.title}
+          onChange={(e) => updatePost(e.target.value, 'title')}
           type="text"
           name="title"
           className="mb-2 w-full rounded-md border-2 p-2 text-black"
         />
 
-        <button type="submit">Modifica</button>
+        <button
+          type="submit"
+          className="rounded-md bg-orange-500 px-4 py-1 text-sm font-semibold"
+        >
+          Modifica
+        </button>
       </form>
       <ul>
         {postList.map((post, i) => {
           return (
-            <li className="flex gap-32 px-4" key={post.id}>
+            <li className="mb-3 flex justify-between pl-4 pr-40" key={post.id}>
               <span>
                 {i}. {post.title}
               </span>
               <div>
                 <span
-                  onClick={openFormEdit}
+                  onClick={() => openFormAndSetValueEdit(post)}
                   className="mr-4 rounded-md bg-orange-400 px-2 py-1 text-sm font-semibold hover:cursor-pointer"
                 >
                   Edit
