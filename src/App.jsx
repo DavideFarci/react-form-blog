@@ -8,6 +8,8 @@ function App() {
   };
 
   const [formValues, setFormValues] = useState(initialData);
+  const [editValues, setEditValues] = useState({});
+  const [toggleEdit, setToggleEdit] = useState(false);
 
   const createPost = (newValue, fieldName) => {
     const newFormValue = { ...formValues };
@@ -17,11 +19,21 @@ function App() {
     setFormValues(newFormValue);
   };
 
+  const updatePost = (postIdToUpdate) => {
+    const postToUpdate = postList.filter((post) => post.id == postIdToUpdate);
+    setEditValues(postToUpdate);
+  };
+
+  const openFormEdit = () => {
+    setToggleEdit(!toggleEdit);
+  };
+
   const removePost = (postToRemove) => {
     setPostList(postList.filter((post) => post.id !== postToRemove));
   };
 
-  const handleFormSubmit = (e) => {
+  // Funzione per submit del form
+  const handleFormCreateSubmit = (e) => {
     // Per evitare il refresh
     e.preventDefault();
 
@@ -38,22 +50,37 @@ function App() {
     setFormValues(initialData);
   };
 
+  const handleFormEditSubmit = (e) => {
+    e.preventDefault();
+
+    setPostList([
+      ...postList,
+      {
+        ...editValues,
+        id: editValues.id,
+        title: editValues.title,
+      },
+    ]);
+
+    setEditValues({});
+  };
+
   return (
     <>
       <h1 className="py-8 text-center text-3xl font-bold">Post Create</h1>
       <form
-        onSubmit={handleFormSubmit}
+        onSubmit={handleFormCreateSubmit}
         className="mx-auto flex max-w-xl flex-col"
       >
         <label htmlFor="title" className="font-semibold">
           Titolo del post
         </label>
         <input
-          value={formValues.title}
+          value={editValues.title}
           onChange={(e) => createPost(e.target.value, 'title')}
           type="text"
           name="title"
-          className="mb-2 w-full rounded-md border-2 p-2"
+          className="mb-2 w-full rounded-md border-2 p-2 text-black"
         />
 
         <button
@@ -64,17 +91,46 @@ function App() {
         </button>
       </form>
 
+      <h2 className="px-8 py-8 text-2xl font-bold">Posts List</h2>
+      {/* Form per modifica post  */}
+      <form
+        onSubmit={handleFormEditSubmit}
+        className={`${!toggleEdit && 'hidden'} px-8 py-8`}
+      >
+        <label htmlFor="title" className="font-semibold">
+          Titolo del post
+        </label>
+        <input
+          value={formValues.title}
+          onChange={() => updatePost(post.idlllll)}
+          type="text"
+          name="title"
+          className="mb-2 w-full rounded-md border-2 p-2 text-black"
+        />
+
+        <button type="submit">Modifica</button>
+      </form>
       <ul>
-        {postList.map((post) => {
+        {postList.map((post, i) => {
           return (
-            <li className="flex justify-between px-4" key={post.id}>
-              <span>{post.title}</span>
-              <span
-                onClick={() => removePost(post.id)}
-                className="font-bold hover:cursor-pointer"
-              >
-                X
+            <li className="flex gap-32 px-4" key={post.id}>
+              <span>
+                {i}. {post.title}
               </span>
+              <div>
+                <span
+                  onClick={openFormEdit}
+                  className="mr-4 rounded-md bg-orange-400 px-2 py-1 text-sm font-semibold hover:cursor-pointer"
+                >
+                  Edit
+                </span>
+                <span
+                  onClick={() => removePost(post.id)}
+                  className="font-bold hover:cursor-pointer"
+                >
+                  X
+                </span>
+              </div>
             </li>
           );
         })}
