@@ -71,7 +71,9 @@ function App() {
 
   return (
     <>
-      <h1 className="py-8 text-center text-3xl font-bold">Post Create</h1>
+      <h1 className="py-8 text-center font-mono text-3xl font-bold">
+        Post Create
+      </h1>
       <form
         onSubmit={handleFormCreateSubmit}
         className="mx-auto flex max-w-xl flex-col"
@@ -89,13 +91,13 @@ function App() {
 
         <button
           type="submit"
-          className="mt-8 self-center rounded-md bg-blue-600 px-4 py-2 text-white "
+          className="mt-8 self-center rounded-md bg-blue-600 px-4 py-2 text-white shadow-md shadow-blue-800 transition-all duration-150 ease-in-out hover:translate-y-2 hover:scale-105 hover:font-semibold"
         >
           Crea il Post
         </button>
       </form>
 
-      <h2 className="px-8 py-8 text-2xl font-bold">Posts List</h2>
+      <h2 className="px-8 py-8 font-mono text-2xl font-bold">Posts List</h2>
       {/* Form per modifica post  */}
       <form
         onSubmit={handleFormEditSubmit}
@@ -119,20 +121,22 @@ function App() {
           Modifica
         </button>
       </form>
-      <ul>
+      <ul className="max-w-2xl">
         {postList.map((post, i) => {
           return (
             <li className="mb-3 flex justify-between pl-4 pr-40" key={post.id}>
               <span>
-                {i}. {post.title}
+                <span className="mr-4 font-bold">{i}.</span> {post.title}
               </span>
               <div>
+                {/* Bottone per aprire form di edit  */}
                 <span
                   onClick={() => openFormAndSetValueEdit(post)}
-                  className="mr-4 rounded-md bg-orange-400 px-2 py-1 text-sm font-semibold hover:cursor-pointer"
+                  className="mr-4 rounded-md bg-orange-400 px-2 py-1 text-sm font-semibold shadow-sm shadow-orange-500 duration-200 hover:cursor-pointer hover:bg-orange-600 hover:px-4"
                 >
                   Edit
                 </span>
+                {/* Cancellazione del post  */}
                 <span
                   onClick={() => removePost(post.id)}
                   className="font-bold hover:cursor-pointer"
