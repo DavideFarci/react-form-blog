@@ -60,7 +60,7 @@ const App = () => {
 
         <button
           type="submit"
-          className="mt-8 self-center rounded-md bg-blue-600 px-4 py-2 text-white shadow-md shadow-blue-800 transition-all duration-150 ease-in-out hover:translate-y-2 hover:scale-105 hover:font-semibold"
+          className="mt-8 self-center rounded-md bg-blue-600 px-4 py-2 text-white shadow-md shadow-blue-800 transition-all delay-100 duration-200 ease-in-out hover:translate-y-1 hover:scale-105 hover:bg-blue-700 hover:font-semibold"
         >
           Crea il Post
         </button>
@@ -98,7 +98,7 @@ const App = () => {
             <div>
               <span
                 onClick={() => openFormAndSetValueEdit(post)}
-                className="mr-4 rounded-md bg-orange-400 px-2 py-1 text-sm font-semibold shadow-sm shadow-orange-500 duration-200 hover:cursor-pointer hover:bg-orange-600 hover:px-4"
+                className="mr-4 rounded-md bg-orange-400 px-2 py-1 text-sm font-semibold shadow-sm shadow-orange-500 delay-100 duration-200 hover:cursor-pointer hover:bg-orange-600 hover:px-4"
               >
                 Edit
               </span>
